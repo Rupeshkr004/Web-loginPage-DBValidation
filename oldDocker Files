@@ -1,0 +1,30 @@
+FROM ubuntu
+
+WORKDIR /nodeServer
+COPY . /nodeServer
+# Install curl
+RUN apt-get update && apt-get install -y curl
+
+# Install NVM
+RUN apt-get update && apt-get install -y curl
+
+# Install NVM
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+# Set NVM environment variables
+ENV NVM_DIR /root/.nvm
+ENV NODE_VERSION 14.18.3
+
+# Install Node.js using NVM
+RUN /bin/bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERSION"
+
+# Add Node.js and NPM binaries to the system PATH
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+# Verify Node.js installation
+RUN node -v
+RUN npm -v
+#RUN apt-get install -y build-essential
+# Install Node.js packages
+RUN npm install express mssql
+CMD ["node", "server.js"]

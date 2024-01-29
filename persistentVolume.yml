@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: googlePVC
+spec:
+  storageClassName: glusterfile
+  capacity:
+    storage: 700Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  csi:
+    driver: filestore.csi.storage.gke.io
+    volumeHandle: "modeInstance/us-central1-a/gpvc-volume/googlefileshare"
+    volumeAttributes:
+      ip: 10.244.102.234
+      volume: googlefileshare
